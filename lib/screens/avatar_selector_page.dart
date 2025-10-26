@@ -35,11 +35,7 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
       _selectedAvatar = emoji;
     });
     await _storage.saveString('player_avatar', emoji);
-
-    // Return the selected avatar when navigating back
-    if (mounted) {
-      Navigator.of(context).pop(emoji);
-    }
+    // Don't pop! Let the user close with back button
   }
 
   bool _isAvatarLocked(AvatarData avatar, SubscriptionTier tier) {
