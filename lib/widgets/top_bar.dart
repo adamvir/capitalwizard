@@ -1,16 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../config/app_theme.dart';
 import '../providers/game_provider.dart';
 import '../models/game_state.dart';
 
-class TopBar extends StatelessWidget {
+class TopBar extends StatefulWidget {
   final VoidCallback? onAvatarClick;
 
   const TopBar({
     Key? key,
     this.onAvatarClick,
   }) : super(key: key);
+
+  @override
+  State<TopBar> createState() => _TopBarState();
+}
+
+class _TopBarState extends State<TopBar> {
+  String _currentAvatar = '🧙‍♂️';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAvatar();
+  }
+
+  Future<void> _loadAvatar() async {
+    final prefs = await SharedPreferences.getInstance();
+    final avatar = prefs.getString('player_avatar') ?? '🧙‍♂️';
+    if (mounted) {
+      setState(() {
+        _currentAvatar = avatar;
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Reload avatar when returning to this screen
+    _loadAvatar();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,33 +92,70 @@ class TopBar extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Avatar
+          // Avatar with + button
           GestureDetector(
-            onTap: onAvatarClick,
-            child: Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: Colors.cyanAccent.withOpacity(0.8),
-                  width: 2,
-                ),
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [AppTheme.primaryPurple, Colors.pinkAccent],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.cyan.withOpacity(0.3),
-                    blurRadius: 8,
+            onTap: widget.onAvatarClick,
+            child: Stack(
+              children: [
+                // Avatar circle
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.cyanAccent.withOpacity(0.8),
+                      width: 2,
+                    ),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [AppTheme.primaryPurple, Colors.pinkAccent],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.cyan.withOpacity(0.3),
+                        blurRadius: 8,
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: const Center(
-                child: Icon(Icons.add, size: 32, color: Colors.white),
-              ),
+                  child: Center(
+                    child: Text(
+                      _currentAvatar,
+                      style: const TextStyle(fontSize: 32),
+                    ),
+                  ),
+                ),
+                // + button in top-left corner
+                Positioned(
+                  top: -4,
+                  left: -4,
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF10B981),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF10B981).withOpacity(0.5),
+                          blurRadius: 6,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.add,
+                      size: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(width: 10),

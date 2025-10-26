@@ -14,6 +14,7 @@ import 'arena_page.dart';
 import 'leaderboard_page.dart';
 import 'news_page.dart';
 import 'subscription_page.dart';
+import 'avatar_selector_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -95,7 +96,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           TopBar(
                             onAvatarClick: () {
                               // Navigate to avatar selector
-                              // TODO: Implement navigation
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const AvatarSelectorPage(),
+                                ),
+                              );
                             },
                           ),
 
