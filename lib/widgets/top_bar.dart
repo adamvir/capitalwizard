@@ -19,17 +19,30 @@ class TopBar extends StatefulWidget {
 
 class _TopBarState extends State<TopBar> {
   String _currentAvatar = '🧙‍♂️';
+  late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     _loadAvatar();
+
+    // Listen for route changes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadAvatar();
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   Future<void> _loadAvatar() async {
     final prefs = await SharedPreferences.getInstance();
     final avatar = prefs.getString('player_avatar') ?? '🧙‍♂️';
-    if (mounted) {
+    if (mounted && avatar != _currentAvatar) {
       setState(() {
         _currentAvatar = avatar;
       });
@@ -37,9 +50,8 @@ class _TopBarState extends State<TopBar> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Reload avatar when returning to this screen
+  void didUpdateWidget(TopBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
     _loadAvatar();
   }
 

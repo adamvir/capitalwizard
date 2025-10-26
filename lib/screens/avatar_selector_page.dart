@@ -115,6 +115,7 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
               children: [
                 // Current Avatar Display
                 Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -322,7 +323,7 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 0.75,
+            childAspectRatio: 0.85,
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
           ),

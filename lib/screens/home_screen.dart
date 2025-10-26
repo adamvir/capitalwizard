@@ -25,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _bottomNavIndex = 0;
+  int _avatarUpdateKey = 0;
 
   void _onBottomNavTap(int index) {
     setState(() {
@@ -94,9 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           // Top Bar with coins, gems, avatar, level
                           TopBar(
+                            key: ValueKey(_avatarUpdateKey),
                             onAvatarClick: () async {
                               // Navigate to avatar selector and wait for result
-                              final result = await Navigator.push(
+                              await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const AvatarSelectorPage(),
@@ -104,8 +106,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
 
                               // Force rebuild to update avatar
-                              if (result != null && mounted) {
-                                setState(() {});
+                              if (mounted) {
+                                setState(() {
+                                  _avatarUpdateKey++;
+                                });
                               }
                             },
                           ),
