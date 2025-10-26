@@ -323,7 +323,7 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 0.82,
+            childAspectRatio: 1.1,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
           ),
