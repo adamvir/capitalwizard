@@ -428,14 +428,159 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
           ),
         ),
         child: SafeArea(
-          child: _gameState == 'betting'
-              ? _buildBettingView()
-              : _gameState == 'playing'
-                  ? _buildPlayingView()
-                  : _buildResultView(),
+          child: Stack(
+            children: [
+              // Crystal Background Decorations
+              ..._buildCrystalDecorations(),
+
+              // Main Content
+              _gameState == 'betting'
+                  ? _buildBettingView()
+                  : _gameState == 'playing'
+                      ? _buildPlayingView()
+                      : _buildResultView(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  List<Widget> _buildCrystalDecorations() {
+    return [
+      // Top right purple crystal
+      Positioned(
+        top: 40,
+        right: 32,
+        child: TweenAnimationBuilder<double>(
+          duration: const Duration(seconds: 2),
+          tween: Tween(begin: 0.3, end: 1.0),
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value,
+              child: Container(
+                width: 80,
+                height: 96,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      const Color(0xFF9333EA).withOpacity(0.3),
+                      Colors.transparent,
+                    ],
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
+                transform: Matrix4.rotationZ(0.2),
+              ),
+            );
+          },
+        ),
+      ),
+      // Top left blue crystal
+      Positioned(
+        top: 128,
+        left: 24,
+        child: TweenAnimationBuilder<double>(
+          duration: const Duration(seconds: 2),
+          tween: Tween(begin: 0.3, end: 1.0),
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value,
+              child: Container(
+                width: 64,
+                height: 80,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      const Color(0xFF2563EB).withOpacity(0.3),
+                      Colors.transparent,
+                    ],
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
+                transform: Matrix4.rotationZ(-0.2),
+              ),
+            );
+          },
+        ),
+      ),
+      // Bottom right pink crystal
+      Positioned(
+        bottom: 160,
+        right: 40,
+        child: TweenAnimationBuilder<double>(
+          duration: const Duration(seconds: 2),
+          tween: Tween(begin: 0.3, end: 1.0),
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value,
+              child: Container(
+                width: 56,
+                height: 72,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      const Color(0xFFDB2777).withOpacity(0.3),
+                      Colors.transparent,
+                    ],
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
+                transform: Matrix4.rotationZ(0.1),
+              ),
+            );
+          },
+        ),
+      ),
+      // Bottom left cyan crystal
+      Positioned(
+        bottom: 80,
+        left: 32,
+        child: TweenAnimationBuilder<double>(
+          duration: const Duration(seconds: 2),
+          tween: Tween(begin: 0.3, end: 1.0),
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value,
+              child: Container(
+                width: 48,
+                height: 64,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      const Color(0xFF06B6D4).withOpacity(0.3),
+                      Colors.transparent,
+                    ],
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
+                transform: Matrix4.rotationZ(-0.1),
+              ),
+            );
+          },
+        ),
+      ),
+    ];
   }
 
   Widget _buildBettingView() {
@@ -495,42 +640,73 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
             width: 1,
           ),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF581C87).withOpacity(0.5),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(10),
       child: Row(
         children: [
-          IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.chevron_left, color: Colors.white),
-            style: IconButton.styleFrom(
-              backgroundColor: const Color(0xFF1E293B),
+          // Back Button
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
+                ),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: const Color(0xFF475569).withOpacity(0.5),
+                ),
+              ),
+              child: const Icon(
+                Icons.chevron_left,
+                color: Colors.white,
+                size: 20,
+              ),
             ),
           ),
           const SizedBox(width: 8),
+          // Title and Coins
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.emoji_events, color: Color(0xFFFBBF24), size: 18),
+                    const Icon(Icons.emoji_events, color: Color(0xFFFBBF24), size: 16),
                     const SizedBox(width: 6),
-                    Text(
-                      'Küzdőtér',
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        foreground: Paint()
-                          ..shader = const LinearGradient(
-                            colors: [Color(0xFFFBBF24), Color(0xFFF59E0B), Color(0xFFDC2626)],
-                          ).createShader(const Rect.fromLTWH(0, 0, 200, 70)),
+                    ShaderMask(
+                      shaderCallback: (bounds) => const LinearGradient(
+                        colors: [
+                          Color(0xFFFBBF24),
+                          Color(0xFFF59E0B),
+                          Color(0xFFDC2626),
+                        ],
+                      ).createShader(bounds),
+                      child: Text(
+                        'Küzdőtér',
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    const Icon(Icons.bolt, color: Color(0xFFFBBF24), size: 14),
+                    const Icon(Icons.bolt, color: Color(0xFFFBBF24), size: 12),
                     const SizedBox(width: 4),
                     Text(
                       '$coins',
@@ -544,7 +720,40 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
               ],
             ),
           ),
-          Icon(Icons.flash_on, color: Color(0xFFEF4444), size: 24),
+          // Animated Swords Icon
+          TweenAnimationBuilder<double>(
+            duration: const Duration(seconds: 2),
+            tween: Tween(begin: 0.0, end: 1.0),
+            builder: (context, value, child) {
+              return Transform.rotate(
+                angle: (value < 0.25
+                    ? -0.17 * (value * 4)
+                    : value < 0.5
+                        ? -0.17 + 0.34 * ((value - 0.25) * 4)
+                        : value < 0.75
+                            ? 0.17 - 0.34 * ((value - 0.5) * 4)
+                            : -0.17 * (1 - (value - 0.75) * 4)),
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFEF4444).withOpacity(0.6),
+                        blurRadius: 8,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.flash_on,
+                    color: Color(0xFFEF4444),
+                    size: 24,
+                  ),
+                ),
+              );
+            },
+            onEnd: () => setState(() {}), // Loop animation
+          ),
         ],
       ),
     );
@@ -593,20 +802,31 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
     return GestureDetector(
       onTap: isDisabled ? null : onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         decoration: BoxDecoration(
           gradient: isActive
               ? const LinearGradient(
-                  colors: [Color(0xFF7C3AED), Color(0xFF581C87), Color(0xFFDB2777)],
+                  colors: [Color(0xFF9333EA), Color(0xFF7C3AED), Color(0xFFDB2777)],
                 )
               : null,
-          color: isDisabled ? const Color(0xFF1E293B).withOpacity(0.2) : const Color(0xFF1E293B).withOpacity(0.5),
-          borderRadius: BorderRadius.circular(12),
+          color: isDisabled
+              ? const Color(0xFF1E293B).withOpacity(0.2)
+              : const Color(0xFF1E293B).withOpacity(0.5),
+          borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isActive
-                ? AppTheme.primaryPurple.withOpacity(0.3)
+                ? const Color(0xFF9333EA).withOpacity(0.3)
                 : const Color(0xFF334155).withOpacity(0.3),
           ),
+          boxShadow: isActive
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFF9333EA).withOpacity(0.5),
+                    blurRadius: 12,
+                    spreadRadius: 0,
+                  ),
+                ]
+              : null,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -625,6 +845,7 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
               label,
               style: TextStyle(
                 fontSize: 12,
+                fontWeight: isActive ? FontWeight.w500 : FontWeight.normal,
                 color: isDisabled
                     ? const Color(0xFF475569)
                     : isActive
@@ -652,24 +873,36 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
             const Color(0xFF1E293B).withOpacity(0.8),
           ],
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppTheme.primaryPurple.withOpacity(0.3),
+          color: const Color(0xFF9333EA).withOpacity(0.3),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 20,
+            spreadRadius: 2,
+          ),
+        ],
       ),
       child: Column(
         children: [
+          // Header
           Row(
             children: [
-              const Icon(Icons.emoji_events, color: Color(0xFFFBBF24), size: 18),
+              const Icon(Icons.emoji_events, color: Color(0xFFFBBF24), size: 16),
               const SizedBox(width: 8),
-              const Text(
+              Text(
                 'Válassz tétet',
-                style: TextStyle(color: Colors.white, fontSize: 14),
+                style: GoogleFonts.inter(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
           // Slider
           SliderTheme(
@@ -678,8 +911,9 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
               overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
               activeTrackColor: const Color(0xFFFBBF24),
-              inactiveTrackColor: const Color(0xFF334155).withOpacity(0.5),
+              inactiveTrackColor: const Color(0xFF475569).withOpacity(0.5),
               thumbColor: const Color(0xFFF59E0B),
+              overlayColor: const Color(0xFFFBBF24).withOpacity(0.2),
             ),
             child: Slider(
               value: _betAmount.toDouble(),
@@ -704,12 +938,17 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
                   '${config.arenaMinBet}',
                   style: const TextStyle(color: Color(0xFF94A3B8), fontSize: 12),
                 ),
-                Text(
-                  '$_betAmount',
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFFFBBF24),
+                ShaderMask(
+                  shaderCallback: (bounds) => const LinearGradient(
+                    colors: [Color(0xFFFBBF24), Color(0xFFF59E0B)],
+                  ).createShader(bounds),
+                  child: Text(
+                    '$_betAmount',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 Text(
@@ -724,27 +963,43 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
 
           // Quick bet buttons
           Row(
-            children: [50, 100, 200, 500].map((amount) {
+            children: [50, 100, 200, maxBet].map((amount) {
               final effectiveAmount = min(amount, maxBet);
+              final isSelected = _betAmount == effectiveAmount;
               return Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: ElevatedButton(
-                    onPressed: () {
+                  child: GestureDetector(
+                    onTap: () {
                       setState(() {
                         _betAmount = effectiveAmount;
                       });
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF334155),
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      shape: RoundedRectangleBorder(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: isSelected
+                              ? [const Color(0xFF475569), const Color(0xFF334155)]
+                              : [const Color(0xFF334155), const Color(0xFF1E293B)],
+                        ),
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: const Color(0xFF475569).withOpacity(0.5),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      '$amount',
-                      style: const TextStyle(fontSize: 12, color: Colors.white),
+                      child: Center(
+                        child: Text(
+                          '$amount',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -755,27 +1010,38 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
           const SizedBox(height: 16),
 
           // Start battle button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _startGame,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+          GestureDetector(
+            onTap: _startGame,
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFDC2626), Color(0xFFB91C1C), Color(0xFFF97316)],
                 ),
-                backgroundColor: const Color(0xFFDC2626),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: const Color(0xFFF87171).withOpacity(0.3),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFDC2626).withOpacity(0.5),
+                    blurRadius: 12,
+                    spreadRadius: 0,
+                  ),
+                ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.flash_on, size: 18),
+                  const Icon(Icons.flash_on, size: 16, color: Colors.white),
                   const SizedBox(width: 8),
                   Text(
                     'Küzdelem kezdése',
                     style: GoogleFonts.inter(
                       fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -789,17 +1055,19 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
 
   Widget _buildRulesCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
           colors: [
             const Color(0xFF0F172A).withOpacity(0.8),
             const Color(0xFF581C87).withOpacity(0.4),
           ],
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: AppTheme.primaryPurple.withOpacity(0.2),
+          color: const Color(0xFF9333EA).withOpacity(0.2),
         ),
       ),
       child: Column(
@@ -807,15 +1075,19 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
         children: [
           Row(
             children: [
-              const Icon(Icons.star, color: Color(0xFFA78BFA), size: 16),
-              const SizedBox(width: 8),
-              const Text(
+              const Icon(Icons.star, color: Color(0xFFA78BFA), size: 12),
+              const SizedBox(width: 6),
+              Text(
                 'Szabályok',
-                style: TextStyle(color: Color(0xFFA78BFA), fontSize: 12),
+                style: GoogleFonts.inter(
+                  color: const Color(0xFFA78BFA),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _buildRuleItem('10 kérdés • Tippeld a számot', const Color(0xFFA78BFA)),
           _buildRuleItem('Közelebb = nyersz', const Color(0xFFA78BFA)),
           _buildRuleItem('Győzelem: +$_betAmount', const Color(0xFF34D399)),
@@ -827,7 +1099,7 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
 
   Widget _buildRuleItem(String text, Color dotColor) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
+      padding: const EdgeInsets.only(bottom: 4),
       child: Row(
         children: [
           Container(
@@ -838,12 +1110,12 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
               shape: BoxShape.circle,
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
-                color: Color(0xFFCBD5E1),
+              style: GoogleFonts.inter(
+                color: const Color(0xFFCBD5E1),
                 fontSize: 12,
               ),
             ),
@@ -862,19 +1134,29 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
               colors: [
                 const Color(0xFF1E293B).withOpacity(0.8),
                 const Color(0xFF4338CA).withOpacity(0.3),
                 const Color(0xFF1E293B).withOpacity(0.8),
               ],
             ),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: const Color(0xFF4338CA).withOpacity(0.3),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 20,
+                spreadRadius: 2,
+              ),
+            ],
           ),
           child: Column(
             children: [
+              // Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -885,23 +1167,29 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
                         height: 24,
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                             colors: [Color(0xFF4338CA), Color(0xFF7C3AED)],
                           ),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Center(
-                          child: Text('📚', style: TextStyle(fontSize: 12)),
+                          child: Text('📚', style: TextStyle(fontSize: 10)),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      const Text(
+                      Text(
                         'Kölcsönzött könyvek',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: const Color(0xFF4338CA).withOpacity(0.5),
                       borderRadius: BorderRadius.circular(12),
@@ -916,81 +1204,126 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
 
+              // Books Grid or Empty State
               if (rentedBooks.isEmpty)
-            Column(
-              children: [
-                const Text(
-                  'Nincs kölcsönzött könyv',
-                  style: TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
-                ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Küzdőtérben csak a kölcsönzött könyvek kérdéseit kapod',
-                  style: TextStyle(color: Color(0xFF64748B), fontSize: 12),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    // Navigate to library
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2563EB),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text('📚'),
-                      SizedBox(width: 8),
-                      Text('Ugrás a Könyvtárba'),
-                    ],
-                  ),
-                ),
-              ],
-            )
+                Column(
+                  children: [
+                    const Text(
+                      'Nincs kölcsönzött könyv',
+                      style: TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Küzdőtérben csak a kölcsönzött könyvek kérdéseit kapod',
+                      style: TextStyle(color: Color(0xFF64748B), fontSize: 12),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 12),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF2563EB), Color(0xFF4338CA)],
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: const Color(0xFF60A5FA).withOpacity(0.3),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF2563EB).withOpacity(0.3),
+                              blurRadius: 8,
+                              spreadRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('📚', style: TextStyle(fontSize: 14)),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Ugrás a Könyvtárba',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               else
                 Column(
                   children: [
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: rentedBooks.map((book) {
+                    // Books Grid (3 columns)
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        childAspectRatio: 2.5,
+                      ),
+                      itemCount: rentedBooks.length,
+                      itemBuilder: (context, index) {
+                        final book = rentedBooks[index];
                         final isSelected = _selectedBooks.contains(book.title);
                         final shortName = _getShortBookName(book.title);
+                        final canSelect = isSelected ||
+                            _selectedBooks.length < GameConfig.defaultConfig.maxBooksForArena;
 
                         return GestureDetector(
                           onTap: () {
+                            if (!canSelect) return;
                             setState(() {
                               if (isSelected) {
-                                if (_selectedBooks.length > 1) {
-                                  _selectedBooks.remove(book.title);
-                                }
+                                _selectedBooks.remove(book.title);
                               } else {
-                                if (_selectedBooks.length < GameConfig.defaultConfig.maxBooksForArena) {
-                                  _selectedBooks.add(book.title);
-                                }
+                                _selectedBooks.add(book.title);
                               }
                             });
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                             decoration: BoxDecoration(
                               gradient: isSelected
                                   ? const LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
                                       colors: [Color(0xFF4338CA), Color(0xFF7C3AED)],
                                     )
                                   : null,
-                              color: isSelected ? null : const Color(0xFF1E293B).withOpacity(0.5),
-                              borderRadius: BorderRadius.circular(12),
+                              color: isSelected
+                                  ? null
+                                  : canSelect
+                                      ? const Color(0xFF1E293B).withOpacity(0.5)
+                                      : const Color(0xFF0F172A).withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(8),
                               border: Border.all(
                                 color: isSelected
                                     ? const Color(0xFF818CF8).withOpacity(0.5)
-                                    : const Color(0xFF334155).withOpacity(0.5),
+                                    : canSelect
+                                        ? const Color(0xFF475569).withOpacity(0.5)
+                                        : const Color(0xFF334155).withOpacity(0.3),
                               ),
+                              boxShadow: isSelected
+                                  ? [
+                                      BoxShadow(
+                                        color: const Color(0xFF4338CA).withOpacity(0.3),
+                                        blurRadius: 8,
+                                        spreadRadius: 0,
+                                      ),
+                                    ]
+                                  : null,
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -999,57 +1332,128 @@ class _ArenaPageState extends State<ArenaPage> with TickerProviderStateMixin {
                                   width: 8,
                                   height: 8,
                                   decoration: BoxDecoration(
-                                    color: isSelected ? const Color(0xFF34D399) : const Color(0xFF475569),
+                                    color: isSelected
+                                        ? const Color(0xFF34D399)
+                                        : const Color(0xFF475569),
                                     shape: BoxShape.circle,
+                                    boxShadow: isSelected
+                                        ? [
+                                            BoxShadow(
+                                              color: const Color(0xFF34D399).withOpacity(0.6),
+                                              blurRadius: 4,
+                                            ),
+                                          ]
+                                        : null,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  shortName,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: isSelected ? Colors.white : const Color(0xFF94A3B8),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    shortName,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      color: isSelected
+                                          ? Colors.white
+                                          : canSelect
+                                              ? const Color(0xFF94A3B8)
+                                              : const Color(0xFF64748B),
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         );
-                      }).toList(),
+                      },
                     ),
                     const SizedBox(height: 12),
+                    // Action Buttons
                     Row(
                       children: [
                         Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
+                          child: GestureDetector(
+                            onTap: () {
                               setState(() {
-                                final maxBooks = min(rentedBooks.length, GameConfig.defaultConfig.maxBooksForArena);
-                                _selectedBooks = rentedBooks.take(maxBooks).map((b) => b.title).toList();
+                                final maxBooks = min(
+                                    rentedBooks.length,
+                                    GameConfig.defaultConfig.maxBooksForArena);
+                                _selectedBooks =
+                                    rentedBooks.take(maxBooks).map((b) => b.title).toList();
                               });
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF059669).withOpacity(0.6),
-                              padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFF059669).withOpacity(0.6),
+                                    const Color(0xFF047857).withOpacity(0.6),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: const Color(0xFF10B981).withOpacity(0.3),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Max kiválasztása',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
                             ),
-                            child: const Text('Max kiválasztása', style: TextStyle(fontSize: 12)),
                           ),
                         ),
                         const SizedBox(width: 8),
                         Expanded(
-                          child: ElevatedButton(
-                            onPressed: _selectedBooks.isEmpty
+                          child: GestureDetector(
+                            onTap: _selectedBooks.isEmpty
                                 ? null
                                 : () {
                                     setState(() {
                                       _selectedBooks.clear();
                                     });
                                   },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFDC2626).withOpacity(0.6),
-                              padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                gradient: _selectedBooks.isEmpty
+                                    ? null
+                                    : LinearGradient(
+                                        colors: [
+                                          const Color(0xFFDC2626).withOpacity(0.6),
+                                          const Color(0xFFB91C1C).withOpacity(0.6),
+                                        ],
+                                      ),
+                                color: _selectedBooks.isEmpty
+                                    ? const Color(0xFF1E293B).withOpacity(0.3)
+                                    : null,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: _selectedBooks.isEmpty
+                                      ? const Color(0xFF475569).withOpacity(0.3)
+                                      : const Color(0xFFEF4444).withOpacity(0.3),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Összes törlése',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    color: _selectedBooks.isEmpty
+                                        ? const Color(0xFF64748B)
+                                        : Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
                             ),
-                            child: const Text('Összes törlése', style: TextStyle(fontSize: 12)),
                           ),
                         ),
                       ],
