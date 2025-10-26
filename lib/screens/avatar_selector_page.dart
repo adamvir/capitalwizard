@@ -35,6 +35,11 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
       _selectedAvatar = emoji;
     });
     await _storage.saveString('player_avatar', emoji);
+
+    // Return the selected avatar when navigating back
+    if (mounted) {
+      Navigator.of(context).pop(emoji);
+    }
   }
 
   bool _isAvatarLocked(AvatarData avatar, SubscriptionTier tier) {
@@ -110,9 +115,74 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
                 ],
               ),
             ),
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
+            body: Column(
+              children: [
+                // Current Avatar Display
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        const Color(0xFF6D28D9).withValues(alpha: 0.9),
+                        const Color(0xFF7C3AED).withValues(alpha: 0.9),
+                      ],
+                    ),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: const Color(0xFF9333EA),
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [Color(0xFF9333EA), Color(0xFFEC4899)],
+                          ),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: const Color(0xFF581C87),
+                            width: 4,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF9333EA).withValues(alpha: 0.5),
+                              blurRadius: 20,
+                              spreadRadius: 5,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            _selectedAvatar,
+                            style: const TextStyle(fontSize: 50),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Kiválasztott Avatar',
+                        style: TextStyle(
+                          color: Color(0xFFC084FC),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Avatar Grid
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildAvatarSection(
@@ -198,6 +268,9 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
                         const SizedBox(height: 24),
                       ],
                     ),
+                  ),
+                ),
+              ],
             ),
           ),
         );
@@ -253,7 +326,7 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 0.8,
+            childAspectRatio: 0.75,
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
           ),

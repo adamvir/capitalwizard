@@ -94,14 +94,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           // Top Bar with coins, gems, avatar, level
                           TopBar(
-                            onAvatarClick: () {
-                              // Navigate to avatar selector
-                              Navigator.push(
+                            onAvatarClick: () async {
+                              // Navigate to avatar selector and wait for result
+                              final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => const AvatarSelectorPage(),
                                 ),
                               );
+
+                              // Force rebuild to update avatar
+                              if (result != null && mounted) {
+                                setState(() {});
+                              }
                             },
                           ),
 
