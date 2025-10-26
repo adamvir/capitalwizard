@@ -178,7 +178,7 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
                 // Avatar Grid
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -323,9 +323,9 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 1.1,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
+            childAspectRatio: 0.85,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
           ),
           itemCount: avatars.length,
           itemBuilder: (context, index) {
@@ -347,7 +347,7 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
                           _getRarityColor(avatar.rarity).withValues(alpha: 0.7),
                         ],
                       ),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: isSelected
                             ? Colors.white
