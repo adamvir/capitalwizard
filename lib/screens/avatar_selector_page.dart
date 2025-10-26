@@ -323,9 +323,9 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 1.0,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
+            childAspectRatio: 0.82,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
           ),
           itemCount: avatars.length,
           itemBuilder: (context, index) {
@@ -371,7 +371,7 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
                           children: [
                             Text(
                               avatar.emoji,
-                              style: const TextStyle(fontSize: 40),
+                              style: const TextStyle(fontSize: 36),
                             ),
                             if (isLocked)
                               Positioned.fill(
