@@ -323,9 +323,9 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
-            childAspectRatio: 0.85,
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
+            mainAxisExtent: 130,
           ),
           itemCount: avatars.length,
           itemBuilder: (context, index) {
@@ -364,10 +364,12 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
                             ]
                           : null,
                     ),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Stack(
+                          alignment: Alignment.center,
                           children: [
                             Text(
                               avatar.emoji,
@@ -394,16 +396,19 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
                           avatar.name,
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
                           ),
                           textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
+                        const SizedBox(height: 4),
                         Text(
                           _getRarityName(avatar.rarity),
                           style: TextStyle(
                             color: _getRarityTextColor(avatar.rarity),
-                            fontSize: 8,
+                            fontSize: 10,
                           ),
                         ),
                       ],
