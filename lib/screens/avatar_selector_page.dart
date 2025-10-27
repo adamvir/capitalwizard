@@ -416,20 +416,20 @@ class _AvatarSelectorPageState extends State<AvatarSelectorPage> {
                   ),
                   if (isSelected && !isLocked)
                     Positioned(
-                      top: -4,
-                      right: -4,
+                      top: 4,
+                      right: 4,
                       child: Container(
                         width: 24,
                         height: 24,
                         decoration: BoxDecoration(
-                          color: Colors.green,
+                          color: const Color(0xFF10B981),
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 2),
                         ),
                         child: const Icon(
                           Icons.check,
                           color: Colors.white,
-                          size: 12,
+                          size: 14,
                         ),
                       ),
                     ),
